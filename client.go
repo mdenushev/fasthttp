@@ -1663,7 +1663,7 @@ func (c *HostClient) connsCleaner() {
 }
 
 func (c *HostClient) closeConn(cc *clientConn) {
-	fmt.Printf("%s: closing conn %s\n", time.Now().String(), cc.c.LocalAddr().String())
+	fmt.Printf("{\"@timestamp\":\"%s\", \"message\":\"closing conn %s\"}\n", time.Now().String(), cc.c.LocalAddr().String())
 	c.decConnsCount()
 	cc.c.Close()
 	releaseClientConn(cc)
@@ -1723,7 +1723,7 @@ func releaseClientConn(cc *clientConn) {
 var clientConnPool sync.Pool
 
 func (c *HostClient) releaseConn(cc *clientConn) {
-	fmt.Printf("%s: releasing conn %s\n", time.Now().String(), cc.c.LocalAddr().String())
+	fmt.Printf("{\"@timestamp\":\"%s\", \"message\":\"releasing conn %s\"}\n", time.Now().String(), cc.c.LocalAddr().String())
 	cc.lastUseTime = time.Now()
 	if c.MaxConnWaitTimeout <= 0 {
 		c.connsLock.Lock()
